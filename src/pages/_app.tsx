@@ -15,9 +15,9 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: false,
-    }
-  }
-})
+    },
+  },
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <main
           className={cn(
             inter.className,
-            "flex min-h-screen min-w-full flex-col items-center justify-between gap-10",
+            "flex min-h-screen min-w-full flex-col items-center justify-center gap-10",
           )}
         >
           <Component {...pageProps} />

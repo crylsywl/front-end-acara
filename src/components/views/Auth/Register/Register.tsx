@@ -18,10 +18,11 @@ const Register = () => {
   } = useRegister();
 
   return (
-    <div className="flex min-h-screen w-full flex-row items-center justify-center gap-20">
-      <div className="flex w-1/3 flex-col items-center justify-center gap-10">
+    <div className="flex w-full flex-col items-center justify-center gap-10 lg:flex-row lg:gap-20">
+      <div className="flex w-full lg:w-1/3 flex-col items-center justify-center gap-10">
         <Image
           src="/images/general/logo.svg"
+          className=""
           alt="Register"
           width={180}
           height={180}
@@ -29,7 +30,7 @@ const Register = () => {
         <Image
           src="/images/illustration/login.svg"
           alt="Register"
-          className="w-full"
+          className="w-2/3 lg:w-full"
           width={1024}
           height={1024}
         />
@@ -52,7 +53,10 @@ const Register = () => {
             </p>
           )}
           <form
-            className={cn("flex w-80 flex-col", Object.keys(errors).length > 0 ? "gap-2" : "gap-4")}
+            className={cn(
+              "flex w-80 flex-col",
+              Object.keys(errors).length > 0 ? "gap-2" : "gap-4",
+            )}
             onSubmit={handleSubmit(handleRegister)}
           >
             <Controller

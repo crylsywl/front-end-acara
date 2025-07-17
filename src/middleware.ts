@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === "/auth/login" || pathname === "/auth/register") {
     if (token) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/member", request.url));
     }
   }
 

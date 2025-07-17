@@ -22,6 +22,9 @@ export default function Home() {
             features such as user registration and login. It is built using
             Next.js and designed for learning and demonstration purposes only.
           </p>
+          <h2 className="text-danger-500 font-bold">
+            Please enter a valid email address to receive the activation email.
+          </h2>
         </div>
         <div className="flex flex-row gap-4">
           <Link href={"/auth/register"}>

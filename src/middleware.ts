@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  console.log("Token:", token);
 
   if (pathname.startsWith("/admin")) {
     if (!token) {

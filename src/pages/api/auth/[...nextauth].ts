@@ -2,11 +2,11 @@ import environment from "@/config/environment";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWTExtended, SessionExtended, UserExtended } from "@/types/Auth";
-import authService from "@/services/auth.service";
+import authServices from "@/services/auth.service";
 
-const config = {
+export default NextAuth({
   session: {
-    stategy: "jwt",
+    strategy: "jwt",
     maxAge: 60 * 60 * 24,
   },
   secret: environment.AUTH_SECRET,
@@ -26,27 +26,50 @@ const config = {
           password: string;
         };
 
-        const result = await authService.login({
-          identifier,
-          password,
-        });
+        // 1. Login untuk mendapatkan token
+    const loginRes = await fetch(environment.API_URL + "/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier, password }),
+    });
 
-        const accessToken = result.data.data;
+    if (!loginRes.ok) {
+      const error = await loginRes.json();
+      throw new Error(error.message || "Login failed");
+    }
 
-        const me = await authService.getProfileWithToken(accessToken);
-        const user = me.data.data;
+    const { token, user } = await loginRes.json();
 
-        if (
-          accessToken &&
-          result.status === 200 &&
-          user._id &&
-          me.status === 200
-        ) {
-          user.accessToken = accessToken;
-          return user;
-        } else {
-          return null;
-        }
+    // 2. Return object sesuai kebutuhan NextAuth
+    return {
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      accessToken: token, // Wajib ada
+      name: user.fullName // Optional
+    };
+
+        // const result = await authServices.login({
+        //   identifier,
+        //   password,
+        // });
+
+        // const accessToken = result.data.data;
+
+        // const me = await authServices.getProfileWithToken(accessToken);
+        // const user = me.data.data;
+
+        // if (
+        //   accessToken &&
+        //   result.status === 200 &&
+        //   user._id &&
+        //   me.status === 200
+        // ) {
+        //   user.accessToken = accessToken;
+        //   return user;
+        // } else {
+        //   return null;
+        // }
       },
     }),
   ],
@@ -59,8 +82,11 @@ const config = {
       user: UserExtended | null;
     }) {
       if (user) {
-        token.user = user;
+        // token.user = user;
+        token.accessToken = user.accessToken;
+      token.role = user.role;
       }
+
       return token;
     },
     async session({
@@ -75,6 +101,4 @@ const config = {
       return session;
     },
   },
-};
-
-export default NextAuth(config);
+});

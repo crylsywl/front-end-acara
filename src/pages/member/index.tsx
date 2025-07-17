@@ -3,7 +3,7 @@ import Dashboard from "@/components/views/Member/Dashboard";
 
 const DashboardMemberPage = () => {
     return (
-        <DashboardLayout title = "Acara | Member">
+        <DashboardLayout title = "Dashboard" description="Dashboard Member" type="member">
             <Dashboard />
         </DashboardLayout>
     )

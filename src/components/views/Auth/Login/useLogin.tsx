@@ -36,7 +36,7 @@ const useLogin = () => {
       redirect: false,
       callbackUrl,
     });
-    if (result?.error && result?.status === 400) {
+    if (result?.error && result?.status === 403) {
       throw new Error("Email or Username not match with your password");
     }
   };

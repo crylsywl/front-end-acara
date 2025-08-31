@@ -12,6 +12,7 @@ const RegisterSuccess = () => {
         className="mb-10"
         width={180}
         height={180}
+        priority
       />
       <Image
         src="/images/illustration/email-send.svg"
@@ -31,7 +32,7 @@ const RegisterSuccess = () => {
           color="danger"
           className="mt-4 w-fit"
           variant="bordered"
-          onClick={() => router.push("/")}
+          onPress={() => router.push("/")}
         >
           Back to Home
         </Button>

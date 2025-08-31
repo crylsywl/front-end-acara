@@ -10,7 +10,7 @@ const headers = {
 const instance = axios.create({
   baseURL: environment.API_URL,
   headers,
-  timeout: 60 * 1000,
+  timeout: 60 * 1000
 });
 
 instance.interceptors.request.use(

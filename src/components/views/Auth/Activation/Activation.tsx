@@ -17,6 +17,7 @@ const Activation = (props: PropsTypes) => {
         className="mb-10"
         width={180}
         height={180}
+        priority
       />
       <Image
         src={status === "success" ? "/images/illustration/success.svg" : "/images/illustration/pending.svg"}
@@ -40,7 +41,7 @@ const Activation = (props: PropsTypes) => {
           color="danger"
           className="mt-4 w-fit"
           variant="bordered"
-          onClick={() => router.push("/")}
+          onPress={() => router.push("/")}
         >
           Back to Home
         </Button>

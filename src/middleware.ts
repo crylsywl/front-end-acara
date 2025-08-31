@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-
   if (pathname.startsWith("/admin")) {
     if (!token) {
       const url = new URL("/auth/login", request.url);
@@ -26,12 +25,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    if (token?.user?.role !== "admin") {
-      return NextResponse.redirect(new URL("/", request.url));
+    if (token?.role !== "admin") {
+      return NextResponse.redirect(new URL("/admin", request.url));
     }
 
+    // console.log(token);
+
     if (pathname === "/admin") {
-      return NextResponse.redirect(new URL("/admin/event", request.url));
+      return NextResponse.redirect(new URL("/admin", request.url));
     }
   }
 

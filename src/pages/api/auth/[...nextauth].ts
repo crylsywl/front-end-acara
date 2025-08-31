@@ -25,51 +25,34 @@ export default NextAuth({
           identifier: string;
           password: string;
         };
+        
+        const result = await authServices.login({
+          identifier,
+          password,
+        });
 
-        // 1. Login untuk mendapatkan token
-    const loginRes = await fetch(environment.API_URL + "/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ identifier, password }),
-    });
+        const accessToken = result.data.token;
+        
+        const me = await authServices.getProfileWithToken(accessToken);
+        const user = me.data.data;
 
-    if (!loginRes.ok) {
-      const error = await loginRes.json();
-      throw new Error(error.message || "Login failed");
-    }
-
-    const { token, user } = await loginRes.json();
-
-    // 2. Return object sesuai kebutuhan NextAuth
-    return {
-      id: user._id,
-      email: user.email,
-      role: user.role,
-      accessToken: token, // Wajib ada
-      name: user.fullName // Optional
-    };
-
-        // const result = await authServices.login({
-        //   identifier,
-        //   password,
-        // });
-
-        // const accessToken = result.data.data;
-
-        // const me = await authServices.getProfileWithToken(accessToken);
-        // const user = me.data.data;
-
-        // if (
-        //   accessToken &&
-        //   result.status === 200 &&
-        //   user._id &&
-        //   me.status === 200
-        // ) {
-        //   user.accessToken = accessToken;
-        //   return user;
-        // } else {
-        //   return null;
-        // }
+        if (
+          accessToken &&
+          result.status === 200 &&
+          user._id &&
+          me.status === 200
+        ) {
+          user.accessToken = accessToken;
+          return {
+            id: user._id,
+            email: user.email,
+            role: user.role,
+            accessToken: accessToken,
+            name: user.fullName,
+          };
+        } else {
+          return null;
+        }
       },
     }),
   ],
@@ -82,9 +65,7 @@ export default NextAuth({
       user: UserExtended | null;
     }) {
       if (user) {
-        // token.user = user;
-        token.accessToken = user.accessToken;
-      token.role = user.role;
+        token.user = user;
       }
 
       return token;

@@ -26,6 +26,7 @@ const Login = () => {
           alt="Login"
           width={180}
           height={180}
+          priority
         />
         <Image
           src="/images/illustration/login.svg"

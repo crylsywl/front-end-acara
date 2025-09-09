@@ -10,6 +10,7 @@ export async function middleware(request: NextRequest) {
     secret: environment.AUTH_SECRET,
   });
 
+
   const { pathname } = request.nextUrl;
 
   if (pathname === "/auth/login" || pathname === "/auth/register") {

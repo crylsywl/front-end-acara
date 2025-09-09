@@ -37,7 +37,7 @@ const useAddCategoryModal = () => {
     resolver: yupResolver(schema),
   });
 
-  const preview = watch("icon")
+  const preview = watch("icon");
 
   const handleUploadIcon = (
     files: FileList,
@@ -51,6 +51,32 @@ const useAddCategoryModal = () => {
           setValue("icon", fileUrl);
         },
       });
+    }
+  };
+
+  const handleDeleteIcon = (
+    onChange: (files: FileList | undefined) => void,
+  ) => {
+    const fileUrl = getValues("icon");
+    if (typeof fileUrl === "string") {
+      mutateDeleteFile({ fileUrl, callback: () => onChange(undefined) });
+    }
+    console.log("delete icon : ", fileUrl);
+  };
+
+  const handleOnClose = (onClose: () => void) => {
+    const fileUrl = getValues("icon");
+    if (typeof fileUrl === "string") {
+      mutateDeleteFile({
+        fileUrl,
+        callback: () => {
+          reset();
+          onClose();
+        },
+      });
+    } else {
+      reset();
+      onClose();
     }
   };
 
@@ -93,6 +119,8 @@ const useAddCategoryModal = () => {
     isSuccessAddCategory,
 
     handleUploadIcon,
+    handleDeleteIcon,
+    handleOnClose,
     isPendingMutateUploadFile,
     isPendingMutateDeleteFile,
     preview,

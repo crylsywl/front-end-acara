@@ -1,3 +1,3 @@
-import AddCategoryModal from "./addCategoryModal"
+import AddCategoryModal from "./AddCategoryModal";
 
 export default AddCategoryModal

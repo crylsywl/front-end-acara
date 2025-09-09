@@ -13,7 +13,8 @@ import { Key, ReactNode, useCallback, useEffect } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_CATEGORY } from "./category.constants";
 import useCategory from "./useCategory";
-import AddCategoryModal from "./addCategoryModal";
+import AddCategoryModal from "./AddCategoryModal";
+import DeleteCategoryModal from "./DeleteCategoryModal";
 
 const Category = () => {
   const { push, isReady, query } = useRouter();
@@ -30,9 +31,13 @@ const Category = () => {
     handleChangePage,
     handleClearSearch,
     handleSearch,
+
+    selectedId, 
+    setSelectedId
   } = useCategory();
 
-  const addCategoryModal = useDisclosure()
+  const addCategoryModal = useDisclosure();
+  const deleteCategoryModal = useDisclosure();
 
   useEffect(() => {
     if (isReady) {
@@ -63,7 +68,10 @@ const Category = () => {
                 >
                   Detail Category
                 </DropdownItem>
-                <DropdownItem key="delete" className="text-danger-500">
+                <DropdownItem key="delete" className="text-danger-500" onPress={() => {
+                  setSelectedId(`${category._id}`)
+                  deleteCategoryModal.onOpen()
+                }}>
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -95,8 +103,16 @@ const Category = () => {
           totalPages={dataCategory?.pagination.totalPages || 1}
         ></DataTable>
       )}
-      <AddCategoryModal {...addCategoryModal} 
-        refetchCategory={refetchCategory}/>
+      <AddCategoryModal
+        {...addCategoryModal}
+        refetchCategory={refetchCategory}
+      />
+      <DeleteCategoryModal
+        {...deleteCategoryModal}
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
+        refetchCategory={refetchCategory}
+      />
     </section>
   );
 };

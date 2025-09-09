@@ -33,6 +33,8 @@ const AddCategoryModal = (props: PropTypes) => {
     isSuccessAddCategory,
 
     handleUploadIcon,
+    handleDeleteIcon,
+    handleOnClose,
     isPendingMutateUploadFile,
     isPendingMutateDeleteFile,
     preview,
@@ -48,10 +50,16 @@ const AddCategoryModal = (props: PropTypes) => {
       onClose();
       refetchCategory();
     }
-  }, []);
+  }, [isSuccessAddCategory]);
 
   return (
-    <Modal isOpen={isOpen} placement="center" scrollBehavior="inside">
+    <Modal
+      isOpen={isOpen}
+      placement="center"
+      scrollBehavior="inside"
+      onClose={() => handleOnClose(onClose)}
+      onOpenChange={onOpenChange}
+    >
       <form onSubmit={handleSubmitForm(handleAddCategory)}>
         <ModalContent className="m-4">
           <ModalHeader>Add Category</ModalHeader>
@@ -94,6 +102,8 @@ const AddCategoryModal = (props: PropTypes) => {
                   <InputFile
                     {...field}
                     onUpload={(files) => handleUploadIcon(files, onChange)}
+                    onDelete={() => handleDeleteIcon(onChange)}
+                    isDeleting={isPendingMutateDeleteFile}
                     isDropable
                     isUploading={isPendingMutateUploadFile}
                     isInvalid={errors.icon !== undefined}
@@ -108,17 +118,13 @@ const AddCategoryModal = (props: PropTypes) => {
             <Button
               color="danger"
               variant="flat"
-              onPress={onClose}
+              onPress={() => handleOnClose(onClose)}
               disabled={defaultDisable}
             >
-              Cencel
+              Cancel
             </Button>
-            <Button
-              color="danger"
-              type="submit"
-              disabled={defaultDisable}
-            >
-              {defaultDisable ? (
+            <Button color="danger" type="submit" disabled={defaultDisable}>
+              {isPendingAddCategory ? (
                 <Spinner size="sm" color="white" />
               ) : (
                 "Create Category"

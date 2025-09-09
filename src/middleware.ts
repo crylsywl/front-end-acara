@@ -25,14 +25,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    if (token?.role !== "admin") {
+    if (token?.user?.role !== "admin") {
       return NextResponse.redirect(new URL("/admin", request.url));
     }
 
     // console.log(token);
 
     if (pathname === "/admin") {
-      return NextResponse.redirect(new URL("/admin", request.url));
+      return NextResponse.redirect(new URL("/admin/category", request.url));
     }
   }
 

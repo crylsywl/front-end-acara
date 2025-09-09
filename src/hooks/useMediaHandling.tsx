@@ -19,8 +19,8 @@ const useMediaHandling = () => {
     callback(icon);
   };
 
-  const { mutate: mutateUploadFile, isPending: isPendingMutateUploadFile } = useMutation(
-    {
+  const { mutate: mutateUploadFile, isPending: isPendingMutateUploadFile } =
+    useMutation({
       mutationFn: (variables: {
         file: File;
         callback: (fileUrl: string) => void;
@@ -31,30 +31,26 @@ const useMediaHandling = () => {
           message: error.message,
         });
       },
-    },
-  );
+    });
 
   const deleteIcon = async (fileUrl: string, callback: () => void) => {
-    const res = await uploadService.deleteFile({ fileUrl})
-    if (res.data.meta.status === 200) {
-        callback();
+    const res = await uploadService.deleteFile({ fileUrl });
+    if (res.status === 200) {
+      callback();
     }
   };
 
-  const { mutate: mutateDeleteFile, isPending: isPendingMutateDeleteFile } = useMutation(
-    {
-      mutationFn: (variables: {
-        fileUrl: string;
-        callback: () => void;
-      }) => deleteIcon(variables.fileUrl, variables.callback),
+  const { mutate: mutateDeleteFile, isPending: isPendingMutateDeleteFile } =
+    useMutation({
+      mutationFn: (variables: { fileUrl: string; callback: () => void }) =>
+        deleteIcon(variables.fileUrl, variables.callback),
       onError: (error) => {
         setToaster({
           type: "error",
           message: error.message,
         });
       },
-    },
-  );
+    });
 
   return {
     mutateUploadFile,

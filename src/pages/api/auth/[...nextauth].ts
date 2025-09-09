@@ -64,6 +64,7 @@ export default NextAuth({
       token: JWTExtended;
       user: UserExtended | null;
     }) {
+
       if (user) {
         token.user = user;
       }
